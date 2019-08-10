@@ -22,7 +22,7 @@ import (
 )
 
 const (
-	redshiftTypeName      = "redshift"
+	redshiftTypeName      = "postgres"
 	defaultRedshiftRenewSQL = `
 ALTER USER "{{name}}" VALID UNTIL '{{expiration}}';
 `
@@ -105,6 +105,8 @@ func (p *Redshift) CreateUser(ctx context.Context, statements dbplugin.Statement
 	if err != nil {
 		return "", "", err
 	}
+
+    username = strings.ToLower(username)
 
 	password, err = p.GeneratePassword()
 	if err != nil {
